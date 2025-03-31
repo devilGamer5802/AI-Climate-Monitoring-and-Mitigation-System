@@ -34,7 +34,7 @@ Climate change is one of the most critical challenges facing humanity, causing w
 
 ## Key Features
 
-*(Yet to be implemented for full version of the model)*
+*(Based on the full project vision)*
 
 1.  **Climate Prediction Models:**
     *   Deep Learning (CNNs, RNNs, Transformers) for long-term forecasting of temperature, precipitation, etc.
@@ -77,9 +77,9 @@ Climate change is one of the most critical challenges facing humanity, causing w
 
 A simplified demonstration of core concepts is available in the following Google Colab notebook:
 
-➡️ [`Project_2_Climate_Demo.ipynb`](<link_to_your_notebook.ipynb_if_uploaded>)
+➡️ [`Project_BITD1.ipynb`](https://colab.research.google.com/drive/1PMHU1QkApckMZ8CeI7I63I0B8YYrZao_?usp=sharing)
 
-**(If the notebook isn't directly linked, state: "See the `Project_2_Climate_Demo.ipynb` file in this repository.")**
+**(If the notebook isn't directly linked, state: "See the `TestAIbyharshaniltuti.ipynb` file in this repository.")**
 
 **The demo notebook covers:**
 
