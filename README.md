@@ -138,6 +138,6 @@ Please adhere to standard coding practices and ensure your contributions align w
 
 ## License
 
-This project is licensed under the [YOUR_CHOSEN_LICENSE] License - see the `LICENSE` file for details. (e.g., MIT, Apache 2.0 - **You need to choose one and add a LICENSE file**).
+This project is licensed under the MIT License - see the `LICENSE` file for details.
 
----
+
