@@ -34,7 +34,7 @@ Climate change is one of the most critical challenges facing humanity, causing w
 
 ## Key Features
 
-*(Based on the full project vision)*
+*(Yet to be implemented for full version of the model)*
 
 1.  **Climate Prediction Models:**
     *   Deep Learning (CNNs, RNNs, Transformers) for long-term forecasting of temperature, precipitation, etc.
