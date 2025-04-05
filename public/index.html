@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Insights Dashboard</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS (for Folium Map) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Plotly.js CDN -->
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div id="loader" class="loader-container">
+        <div class="spinner"></div>
+        <p>Synthesizing Climate Data...</p>
+    </div>
+
+    <!-- Main Content Area (Hidden until data loads) -->
+    <div id="dashboard-content" style="display: none;">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>Climate Insights</h1>
+                <p id="location-info">Location: Loading...</p>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+
+            <!-- Section 1: Overview & Map -->
+            <section class="card overview-card">
+                <div class="card-header">
+                    <h2>Current Status & Location</h2>
+                </div>
+                <div class="card-content grid-container overview-grid">
+                    <div class="data-summary">
+                        <h3>Parameters</h3>
+                        <p><span class="data-label">Latitude:</span> <span class="data-value" id="latitude-val">--</span></p>
+                        <p><span class="data-label">Longitude:</span> <span class="data-value" id="longitude-val">--</span></p>
+                        <p><span class="data-label">History (Days):</span> <span class="data-value" id="past-days-val">--</span></p>
+                        <p><span class="data-label">Data Points:</span> <span class="data-value" id="data-points-val">--</span></p>
+                         <h3 class="sub-heading">Model Settings</h3>
+                         <p><span class="data-label">LSTM Steps:</span> <span class="data-value" id="lstm-steps">--</span></p>
+                         <p><span class="data-label">Anomaly %:</span> <span class="data-value" id="anomaly-contamination">--</span></p>
+                    </div>
+                    <div id="map-container">
+                        <p class="placeholder-text">Loading Location Map...</p>
+                        <!-- Folium map HTML will be injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Time Series -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Historical Climate Variables</h2>
+                </div>
+                <div class="card-content">
+                    <div id="time-series-plot" class="plotly-chart-container">
+                        <p class="placeholder-text">Loading Time Series Plot...</p>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Section 3: Anomaly Detection -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Temperature Anomaly Detection</h2>
+                </div>
+                 <div class="card-content">
+                     <div id="anomaly-plot" class="plotly-chart-container">
+                        <p class="placeholder-text">Loading Anomaly Plot...</p>
+                     </div>
+                     <div class="anomaly-summary">
+                        <p><span class="data-label">Detected Anomalies:</span> <span class="data-value" id="anomaly-count">--</span></p>
+                        <details class="anomaly-details">
+                            <summary>Show Anomaly Details</summary>
+                            <div id="anomaly-table-container">
+                                <p>No anomalies detected or data loading.</p>
+                                <!-- Anomaly table will be generated here if anomalies exist -->
+                            </div>
+                        </details>
+                     </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Temperature Forecasting -->
+            <section class="card">
+                 <div class="card-header">
+                     <h2>Temperature Forecasting (LSTM)</h2>
+                </div>
+                 <div class="card-content">
+                    <div class="forecast-grid">
+                        <!-- Past Performance Plot & Metrics -->
+                        <div class="forecast-item">
+                            <h3>Model Performance (Test Set)</h3>
+                            <div id="forecast-plot" class="plotly-chart-container forecast-chart">
+                                 <p class="placeholder-text">Loading Forecast vs Actual Plot...</p>
+                            </div>
+                             <div class="metrics-container">
+                                 <div class="metric-item">
+                                    <span class="metric-label">MAE</span>
+                                    <span class="metric-value" id="mae-value">--</span>
+                                    <span class="metric-unit">°C</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">R² Score</span>
+                                    <span class="metric-value" id="r2-value">--</span>
+                                     <span class="metric-unit"></span>
+                                </div>
+                             </div>
+                        </div>
+                        <!-- Future Forecast Plot -->
+                         <div class="forecast-item">
+                            <h3>Forecast (Next 24 Hours)</h3>
+                             <div id="future-forecast-plot" class="plotly-chart-container forecast-chart">
+                                 <p class="placeholder-text">Loading Future Forecast Plot...</p>
+                            </div>
+                            <!-- Optional: Add note about model steps again if desired -->
+                            <!-- <p class="model-note">Using <span id="lstm-steps-note">--</span> LSTM steps</p> -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="dashboard-footer">
+             <p class="footer-credits">
+                Designed by devilGamer5802<a href="https://github.com/devilGamer5802">. Climate Data via <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. Analysis as of <span id="analysis-date"></span>.
+            </p>
+            <p class="footer-custom">
+                 Dashboard Design & Concept by <span class="designer-name">devilGamer5802</span>
+             </p>
+         </footer>
+    </div>
+
+    <!-- Leaflet JS (after CSS, before custom script) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- JavaScript for Fetching Data and Rendering Plots -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('dashboard-content');
+
+            fetch('/data') // Fetch from Flask endpoint
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Data received from backend:", data);
+
+                    // --- Populate Info ---
+                    document.getElementById('location-info').textContent = `Location: ${data.location_name || 'N/A'}`;
+                    document.getElementById('latitude-val').textContent = data.latitude !== null ? parseFloat(data.latitude).toFixed(4) : '--';
+                    document.getElementById('longitude-val').textContent = data.longitude !== null ? parseFloat(data.longitude).toFixed(4) : '--';
+                    document.getElementById('past-days-val').textContent = data.past_days || '--';
+                    document.getElementById('data-points-val').textContent = data.data_points !== null ? data.data_points.toLocaleString() : '--';
+                    document.getElementById('lstm-steps').textContent = data.lstm_steps || '--';
+                    // document.getElementById('lstm-steps-note').textContent = data.lstm_steps || '--'; // Uncomment if using the note span
+                    document.getElementById('anomaly-contamination').textContent = data.anomaly_contamination !== null ? `${(data.anomaly_contamination * 100).toFixed(1)}%` : '--';
+                    document.getElementById('analysis-date').textContent = new Date().toLocaleDateString(); // Just the date is cleaner
+
+                    // --- Populate Metrics ---
+                     document.getElementById('anomaly-count').textContent = data.metrics.anomaly_count !== null ? data.metrics.anomaly_count : 'N/A';
+                    document.getElementById('mae-value').textContent = data.metrics.mae !== null ? parseFloat(data.metrics.mae).toFixed(2) : 'N/A';
+                    document.getElementById('r2-value').textContent = data.metrics.r2 !== null ? parseFloat(data.metrics.r2).toFixed(2) : 'N/A';
+
+
+                    // --- Render Plots (Using Plotly JSON) ---
+                    const plotConfig = { responsive: true, displaylogo: false };
+                    const baseLayout = {
+                        paper_bgcolor: 'rgba(0,0,0,0)', // Transparent background
+                        plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot area
+                        font: { color: '#e0e0e0', family: 'Poppins, sans-serif' }, // Match CSS font
+                        xaxis: { gridcolor: '#424242', linecolor: '#424242', zerolinecolor: '#616161', tickfont: { size: 10 } },
+                        yaxis: { gridcolor: '#424242', linecolor: '#424242', zerolinecolor: '#616161', tickfont: { size: 10 } },
+                        legend: { bgcolor: 'rgba(42, 42, 42, 0.8)', bordercolor: '#616161', borderwidth: 1, yanchor: "top", y: 0.99, xanchor: "left", x: 0.01, font: {size: 10} },
+                         margin: { l: 50, r: 30, t: 50, b: 50, pad: 4 } // Adjust margins
+                    };
+
+                    const renderPlot = (elementId, plotJson) => {
+                        const container = document.getElementById(elementId);
+                        if (plotJson) {
+                            try {
+                                const plotData = JSON.parse(plotJson);
+                                // Deep merge layouts - giving precedence to plotData.layout if properties exist
+                                const mergedLayout = {...baseLayout, ...plotData.layout};
+                                // Make sure nested properties like xaxis/yaxis fonts inherit if not specified
+                                mergedLayout.xaxis = {...baseLayout.xaxis, ...(plotData.layout?.xaxis || {})};
+                                mergedLayout.yaxis = {...baseLayout.yaxis, ...(plotData.layout?.yaxis || {})};
+                                mergedLayout.legend = {...baseLayout.legend, ...(plotData.layout?.legend || {})};
+                                mergedLayout.font = {...baseLayout.font, ...(plotData.layout?.font || {})};
+
+                                container.innerHTML = ''; // Clear placeholder
+                                Plotly.newPlot(elementId, plotData.data, mergedLayout, plotConfig);
+                            } catch (e) {
+                                console.error(`Error parsing/plotting ${elementId}:`, e);
+                                container.innerHTML = '<p class="error-text">Error loading plot.</p>';
+                            }
+                        } else {
+                            container.innerHTML = '<p class="placeholder-text">Plot not available.</p>';
+                        }
+                    };
+
+                    renderPlot('time-series-plot', data.plots.time_series);
+                    renderPlot('anomaly-plot', data.plots.anomaly);
+                    renderPlot('forecast-plot', data.plots.forecast_vs_actual);
+                    renderPlot('future-forecast-plot', data.plots.future_forecast);
+
+                    // --- Inject Folium Map ---
+                    const mapContainer = document.getElementById('map-container');
+                    if (data.map_html) {
+                        mapContainer.innerHTML = data.map_html;
+                        // Execute scripts within the injected HTML
+                        Array.from(mapContainer.querySelectorAll("script")).forEach(oldScript => {
+                            const newScript = document.createElement("script");
+                            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        });
+                         // Small delay might help Leaflet initialization sometimes
+                         setTimeout(() => {
+                            if (window.map && typeof window.map.invalidateSize === 'function') {
+                                try { window.map.invalidateSize(); } catch(e) { console.warn("Map invalidateSize error:", e) }
+                             }
+                         }, 100);
+
+                    } else {
+                        mapContainer.innerHTML = '<p class="error-text">Map could not be loaded.</p>';
+                    }
+
+                    // --- Display Anomaly Table ---
+                    const anomalyTableContainer = document.getElementById('anomaly-table-container');
+                    if (data.anomaly_details && data.anomaly_details.length > 0) {
+                        let tableHTML = '<table><thead><tr><th>Time</th><th>Temperature (°C)</th></tr></thead><tbody>';
+                        data.anomaly_details.forEach(anomaly => {
+                             let dateStr = 'Invalid Date';
+                             try {
+                                 dateStr = new Date(anomaly.time).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }); // Cleaner format
+                             } catch (e) {}
+                            tableHTML += `<tr><td>${dateStr}</td><td>${parseFloat(anomaly.temperature_2m).toFixed(2)}</td></tr>`;
+                        });
+                        tableHTML += '</tbody></table>';
+                        anomalyTableContainer.innerHTML = tableHTML;
+                    } else {
+                       anomalyTableContainer.innerHTML = '<p>No anomalies detected or details unavailable.</p>';
+                    }
+
+                    // --- Show content ---
+                    loader.style.opacity = '0'; // Fade out loader
+                    loader.style.pointerEvents = 'none';
+                    content.style.display = 'block'; // Show dashboard
+
+                })
+                .catch(error => {
+                    console.error('Fatal Error fetching/processing data:', error);
+                    loader.innerHTML = `<p class="error-text">Failed to load dashboard data.<br>Error: ${error.message}<br>Please check console or retry.</p>`;
+                     content.style.display = 'none'; // Keep content hidden on error
+                     loader.style.opacity = '1';
+                });
+        });
+    </script>
+
+</body>
+</html>
