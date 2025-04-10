@@ -214,8 +214,7 @@ For local development or running outside Colab:
 ## 📁 Project Structure
 
 A typical structure for the Flask application might look like this:
-
-2025-04-05 09-51-18.mkv
+*[https://github.com/devilGamer5802/AI-Climate-Monitoring-and-Mitigation-System/blob/4779b7dd12765adea5abca2e2867304449e89cc5/website.pdf]
 ---
 
 ## 📊 Data Sources
