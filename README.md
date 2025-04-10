@@ -215,14 +215,7 @@ For local development or running outside Colab:
 
 A typical structure for the Flask application might look like this:
 
-
-
-
-
-
-
-
-
+2025-04-05 09-51-18.mkv
 ---
 
 ## 📊 Data Sources
@@ -267,7 +260,7 @@ Contributions are welcome! We value community input and collaboration. Please fo
 4.  **Push to the Branch:** `git push origin feature/YourAmazingFeature`
 5.  **Open a Pull Request:** Clearly describe your changes and their purpose.
 
-Please open an [Issue](https://github.com/your-username/your-repo-name/issues) first to discuss significant changes or report bugs. Ensure your code adheres to project standards.
+Please open an [Issue](https://github.com/devilGamer5802/AI-Climate-Monitoring-and-Mitigation-System/issues) first to discuss significant changes or report bugs. Ensure your code adheres to project standards.
 
 ---
 
@@ -289,5 +282,5 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for d
 ## 📧 Contact
 
 For questions or support, please **open an issue** on the GitHub repository:
-[https://github.com/your-username/your-repo-name/issues](https://github.com/your-username/your-repo-name/issues)
-*(Replace with your actual repo link)*
+[https://github.com/devilGamer5802/AI-Climate-Monitoring-and-Mitigation-System/issues](https://github.com/devilGamer5802/AI-Climate-Monitoring-and-Mitigation-System/issues)
+
