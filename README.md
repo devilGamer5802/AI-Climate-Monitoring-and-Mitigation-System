@@ -76,6 +76,14 @@ Climate change poses an unprecedented threat, manifesting in extreme weather, bi
 ## 🖼️ Dashboard Preview (Demo)
 
 Experience the interactive dashboard live! Implemented in Google Colab and exposed via Ngrok.
+<div align="center">
+  
+  <!-- *** Add a Screenshot or GIF Here! *** -->
+  <!-- Replace the src with the path to your screenshot/gif in the repo -->
+  <img src="demonstration.gif" alt="Screenshot Proof" width="700" style="border-radius: 8px; margin-top: 20px; margin-bottom: 20px; border: 1px solid #555;"/>
+  
+</div>
+
 
 ➡️ **Access the Live Demo:** `[YOUR_NGROK_URL]`
 *(**Note:** This URL is temporary and generated when the Colab notebook runs the Ngrok cell. Replace the placeholder with the actual URL provided in the notebook's output.)*
